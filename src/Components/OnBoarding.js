@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Step1 from "./Step1";
-
+import Step2 from "./Step2";
 
 function PageNumbers({nrOfPages, activePage}) {
   const stepTitles = ['Your info', 'Select plan', 'Add-ons', 'Summary'];
@@ -35,8 +35,11 @@ function PageNumbers({nrOfPages, activePage}) {
 }
 
 export default function OnBoarding() {
-  const [page, setPage] = useState(1);
-  const [formData, setFormData] = useState({});
+  const [page, setPage] = useState(1); // DEBUG
+  const [formData, setFormData] = useState({
+    subscriptionType: 'Arcade',
+    billingType: 'Monthly'
+  });
 
   const nrOfPages = 4;
 
@@ -57,8 +60,8 @@ export default function OnBoarding() {
 
       {/* main container */}
       <div className="
-        h-screen relative
-        lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4">
+        h-full relative
+        lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4">
 
         {/* page numbers with background image */}
         <PageNumbers nrOfPages={nrOfPages} activePage={page} />
@@ -68,10 +71,10 @@ export default function OnBoarding() {
         {/* lg:border-2 lg:border-red-500 */}
 
           {/* form with title and description */}
-          <div className="-mt-[4.8rem] mx-4 bg-white rounded-lg p-6 lg:mt-2 lg:mx-0"> 
+          <div className="-mt-[4.8rem] mx-4 bg-white rounded-lg shadow-lg lg:shadow-none p-6 lg:mt-2 lg:mx-0"> 
             {/* border-2 border-sky-500 */}
             {(page === 1) && <Step1 submitHandler={submitHandler} data={formData} />}
-            {(page === 2) && <Step1 submitHandler={submitHandler} data={formData} />}
+            {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
           </div>
 
           {/* "Go Back" and "Next Step" buttons container */}
