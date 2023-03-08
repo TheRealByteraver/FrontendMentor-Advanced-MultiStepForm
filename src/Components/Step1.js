@@ -4,10 +4,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
 const Input = forwardRef((props, ref) => {
+
   return (
     <>
-      <label className='text-[#02295a] text-sm font-medium inline-block mt-4'>{props.label}</label>
-      <input className='border border-[#9699ab] w-full h-10 my-2 mt-0 rounded p-2'
+      <label className='text-[#02295a] text-sm font-medium inline-block mt-4 mb-1'>{props.label}</label>
+      { props.error && 
+        <p className='float-right text-[#ed3548] text-sm font-bold inline-block mt-4'>
+          {props.error.message}
+        </p>
+      }
+      
+      <input 
+        className={`border outline-none w-full h-10 my-2 mt-0 rounded p-2
+                    ${props.error ? 'border-[#ed3548]' : 'blur:border-[#9699ab] focus:border-[#473dff]'} 
+            `}
         ref={ref} 
         {...props}>
         {props.children}
@@ -18,9 +28,9 @@ const Input = forwardRef((props, ref) => {
 
 export default function Step1({submitHandler, data}) {
   const schema = yup.object().shape({
-    fullName: yup.string().required('The name field is required'), // custom error message
-    emailAddress: yup.string().email('Your email address is not valid').required('The email address field is required'),
-    phoneNumber: yup.number().positive().integer().required(),
+    fullName: yup.string().required('The Name field is required'), // custom error message
+    emailAddress: yup.string().email('Your email address is not valid').required('An email address is required'),
+    phoneNumber: yup.number().typeError('Please enter a valid phone number').positive('').integer().required('A phone number is required'),
   });
 
   const {
@@ -35,8 +45,8 @@ export default function Step1({submitHandler, data}) {
 
   return (
     <>
-      <h1 className='text-[#02295a] text-2xl font-bold mt-1'>Personal info</h1>
-      <p className='mt-2 text-lg text-[#9699ab]'>Please provide your name, email address, and phone number.</p>
+      <h1 className='text-[#02295a] text-xl font-bold mt-1'>Personal info</h1>
+      <p className='mt-2 text-md text-[#9699ab]'>Please provide your name, email address, and phone number.</p>
       <form 
         id='hook-form'
         onSubmit={handleSubmit(submitHandler)}>
@@ -48,24 +58,25 @@ export default function Step1({submitHandler, data}) {
           ref={ref}
           // end of verbose version of ...register('Name') 
 
-          placeholder="e.g. Stephen King"
+          placeholder='e.g. Stephen King'
           defaultValue={data.fullName} 
-          label='Name' />
-        <p>{errors.fullName?.message}</p>
-        {errors.fullName && <p>Please enter your name.</p>}
+          label='Name' 
+          error={errors.fullName}
+        />
 
         <Input {...register('emailAddress', { required: true })} 
-          placeholder="e.g. stephenking@lorem.com" 
+          placeholder='e.g. stephenking@lorem.com' 
           defaultValue={data.emailAddress} 
-          label='Email Address' />
-        <p>{errors.emailAddress?.message}</p>
-        {errors.emailAddress && <p>Email address is required.</p>}
+          label='Email Address'
+          error={errors.emailAddress} 
+        />
 
         <Input {...register('phoneNumber', { pattern: /\d+/ })} 
-          placeholder="e.g. +1 234 567 890" 
+          placeholder='e.g. 1 234 567 890'
           defaultValue={data.phoneNumber} 
-          label='Phone Number' />
-        {errors.phoneNumber && <p>Please enter a valid phone number.</p>}
+          label='Phone Number' 
+          error={errors.phoneNumber} 
+        />
       </form>
     </>
   );

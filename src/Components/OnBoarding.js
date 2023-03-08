@@ -78,7 +78,7 @@ export default function OnBoarding() {
           </div>
 
           {/* "Go Back" and "Next Step" buttons container */}
-          <div className="bg-white w-full h-20 flex flex-row items-center absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]">
+          <div className="bg-white w-full h-16 flex flex-row items-center absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]">
           {/* lg:border-2 lg:border-green-600 */}
           
             {/* "Go Back" button */}
@@ -93,7 +93,7 @@ export default function OnBoarding() {
             <button 
               type='submit'
               form='hook-form'
-              className="text-white bg-[#02295a] px-4 py-3 rounded ml-auto">
+              className="text-white bg-[#02295a] px-4 py-2 rounded lg:rounded-lg ml-auto">
               {(page === nrOfPages) ? 'Confirm' : 'Next Step'}
             </button>
           </div>

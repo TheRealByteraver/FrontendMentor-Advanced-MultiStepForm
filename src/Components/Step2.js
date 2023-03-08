@@ -1,156 +1,87 @@
 import { useState } from 'react';
-import { useForm, Controller, Radio, RadioGroup, FormControlLabel } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 export default function Step2({submitHandler, data}) {
-  const { handleSubmit, register } = useForm(data);
+  const { handleSubmit, register } = useForm({ defaultValues: { ...data } });
 
-  const subscriptionTypes = ['Arcade', 'Advanced', 'Pro'];
+  // subscriptionTypes = ['Arcade', 'Advanced', 'Pro']
   const [subscriptionType, setSubscriptionType] = useState(data.subscriptionType); 
-  const billingTypes = ['Monthly', 'Yearly'];
+
+  // billingTypes = ['Monthly', 'Yearly']
   const [billingType, setBillingType] = useState(data.billingType);
 
-  const getBillingOptions = (subscriptionType) => {
-    const billingOptions = {
-      'Arcade'  : { 'Monthly': '$9/mo', 'Yearly': '$90/yr', image: '/assets/images/icon-arcade.svg' },
-      'Advanced': { 'Monthly': '$12/mo', 'Yearly': '$120/yr', image: '/assets/images/icon-advanced.svg' },
-      'Pro'     : { 'Monthly': '$15/mo', 'Yearly': '$150/yr', image: '/assets/images/icon-pro.svg' },
-    };
-  
-    return Object.entries(billingOptions).map(billingOption => {
-      const [key, value] = billingOption;
-      const styling = (subscriptionType === key)
-        ? 'border-red-600'
-        : 'border-green-600';
-  
-      return (
-        <label 
-          className={`inline-block w-full h-24 p-3 border rounded-lg ${styling}`}
-          onClick={(event) => {setSubscriptionType(key)}}
-          key={key}
-          htmlFor={key}>
-
-          <img className='float-left' src={value.image} alt='' />          
-          <input                    
-            className='hidden'
-            {...register('subscriptionType')}
-            type='radio'
-            value={key}
-            id={key}
-          />
-          {key}
-        </label>
-      );
-    })
-  }
+  const billingOptions = [
+    { type: 'Arcade', monthly: '$9/mo', yearly: '$90/yr', image: '/assets/images/icon-arcade.svg' },
+    { type: 'Advanced', monthly: '$12/mo', yearly: '$120/yr', image: '/assets/images/icon-advanced.svg' },
+    { type: 'Pro', monthly: '$15/mo', yearly: '$150/yr', image: '/assets/images/icon-pro.svg' },
+  ];
 
   return (
     <>
-      <h1 className='text-[#02295a] text-2xl font-bold mt-1'>Select your plan</h1>
-      <p className='mt-2 mb-4 text-lg text-[#9699ab]'>You have the option of monthly or yearly billing.</p>
+      <h1 className='text-[#02295a] text-xl font-bold mt-1'>Select your plan</h1>
+      <p className='mt-2 mb-4 text-md text-[#9699ab]'>You have the option of monthly or yearly billing.</p>
       <form id='hook-form' onSubmit={handleSubmit(submitHandler)}>
-        { getBillingOptions(subscriptionType) }
+
+        {/* Arcade / Advanced / Pro choice block */}
+        <div className='lg:flex lg:flex-row lg:justify-between'>
+          { 
+            billingOptions.map(billingOption => {
+              const styling = (subscriptionType === billingOption.type) ? 'border-[#473dff] bg-[#eef5ff]' : 'border-[#d6d9e6]';
+              const price = (billingType === 'Monthly') ? billingOption.monthly : billingOption.yearly;
+              return (
+                <label 
+                  className={`inline-block w-full h-min p-3 my-1.5 border rounded-lg ${styling}
+                              lg:w-[31%]`}
+                  onClick={() => {setSubscriptionType(billingOption.type)}}
+                  key={billingOption.type}
+                  htmlFor={billingOption.type}>
+
+                  <img className='float-left' src={billingOption.image} alt='' />          
+                  <input                    
+                    className='hidden'
+                    {...register('subscriptionType')}
+                    type='radio'
+                    value={billingOption.type}
+                    id={billingOption.type}
+                  />
+                  <div className='w-auto ml-[50px] lg:ml-0 lg:mt-24'>
+                    <p className='font-bold text-sm text-[#02295a] leading-4 lg:leading-5'>{billingOption.type}</p>
+                    <p className='text-sm text-[#9699ab] leading-5'>{price}</p>
+                    { 
+                      (billingType === 'Yearly') && 
+                      <p className='font-bold text-xs  lg:leading-5 text-[#02295a]'>2 months free</p> 
+                    }
+                  </div>                
+                </label>
+              );
+            })
+          }
+        </div>
+
+        {/* Monthly / Yearly radio button */}
+        <div className='text-center mt-4 text-sm font-bold bg-[#eef5ff] rounded-md p-3'>
+          <div>
+            <label 
+              className={`w-1/4 mr-6 ${(billingType === 'Monthly' ? 'text-[#02295a]' : 'text-[#9699ab]')}`}
+              htmlFor='Monthly'>Monthly</label>
+            <div className='inline -mt-[1px] pt-[2px] rounded-[12px] h-[26px] w-54px px-1 bg-[#02295a]'>
+              <input 
+                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white' 
+                onClick={() => {setBillingType('Monthly')}}
+                type='radio' id='Monthly' {...register('billingType')} value='Monthly' 
+              />
+              <input 
+                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white' 
+                onClick={() => {setBillingType('Yearly')}}
+                type='radio' id='Yearly' {...register('billingType')} value='Yearly' 
+              />
+            </div>
+            <label 
+              className={`w-1/4 ml-6 ${(billingType === 'Yearly' ? 'text-[#02295a]' : 'text-[#9699ab]')}`} 
+              htmlFor='Yearly'>Yearly</label>
+          </div>
+        </div>
       </form>
     </>
   );
 }
-
-/*
-        <button type="submit">Submit button</button>
-
-const Radiobutton = forwardRef((props, ref) => {
-  // console.log('radio props:', props);
-  // console.log('ref:', ref);
-  // const checkedCSS = props.checked ? 'border-[#02295a] bg-[#bfe2fd]' : '';
-  return (
-    <label 
-      className='inline-block w-full h-24 p-3 border rounded-lg border-green-500
-      
-      '
-      // style={{'label + input[type="radio"]:checked { border: 2px solid green; }'}}
-
-
-        htmlFor={props.id}>
-      <img className='float-left' 
-        src='/assets/images/icon-arcade.svg' alt='' />
-
-      <div className='ml-16 flex flex-col justify-between'>
-        <h3 className='font-semibold text-lg'>{props.label}</h3>
-        <p  className='font-semibold text-md text-[#9699ab]'>$90/yr</p>
-        <p  className='font-semibold text-sm'>2 months free</p>
-      </div>
-
-      <input 
-        className='w-0 h-0 display-none
-        border rounded-lg border-[#9699ab] bg-white checked:border-[#02295a] checked:bg-[#fafbff]'
-        type='radio' 
-        ref={ref} 
-        {...props}>
-        {props.children}
-      </input>
-    </label>
-  );
-});
-
-        <div>
-          <Radiobutton {...register('billingType')}
-            label='monthly' 
-            id='monthly'
-            value={'monthly'} 
-            defaultChecked  />
-
-          <Radiobutton {...register('billingType')} 
-            label='yearly' 
-            id='yearly'
-            value={'yearly'} />          
-        </div> 
-
-
-
-  const radio = ({control} ) => {
-    return (
-      <Controller
-        render={({ field }) => (
-          <RadioGroup aria-label="subscriptionType" {...field}>
-            <FormControlLabel
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
-            <FormControlLabel 
-              value="male" 
-              control={<Radio />} 
-              label="Male" 
-            />
-          </RadioGroup>
-        )}
-        name="RadioGroup"
-        control={control}
-      />
-    );
-  }
-
-
-
-        <Controller
-          name="subscriptionType"
-          control={control}
-          render={({ field }) => <input type="radio" id='Arcade' value={'Arcade'} defaultChecked{...field} />}
-
-        />
-
-        <Controller
-          name="subscriptionType"
-          control={control}
-          render={({ field }) => <input type="radio" id='Advanced' value={'Advanced'} defaultChecked{...field} />}
-
-        />
-
-        <Controller
-          name="subscriptionType"
-          control={control}
-          render={({ field }) => <input type="radio" id='Pro' value={'Pro'} defaultChecked{...field} />}
-
-        />
-
-
-*/
