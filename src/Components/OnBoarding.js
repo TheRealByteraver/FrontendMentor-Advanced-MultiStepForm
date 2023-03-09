@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
+import Step4 from "./Step4";
 
 function PageNumbers({nrOfPages, activePage}) {
   const stepTitles = ['Your info', 'Select plan', 'Add-ons', 'Summary'];
@@ -11,7 +13,7 @@ function PageNumbers({nrOfPages, activePage}) {
     const colors = (i === activePage) ? 'text-black bg-[#bfe2fd] border-none' : 'text-white border-white';
     pages.push(
       <li key={`key-${i}`}
-        className='lg:border-0 lg:border-orange-500 text-white 
+        className='lg:border-0 text-white 
         lg:flex lg:justify-start lg:items-center h-16'>
         <div className={`font-bold border rounded-full h-8 w-8 mx-2 flex justify-center items-center 
             ${colors}`}
@@ -56,35 +58,38 @@ export default function OnBoarding() {
   
   return (
     // background, center child
-    <div className="bg-[#eef5ff] h-screen lg:flex lg:justify-center lg:items-center">
+    <div className='bg-[#eef5ff] h-full lg:h-screen lg:flex lg:justify-center lg:items-center'>
 
       {/* main container */}
-      <div className="
+      <div className='
         h-full relative
-        lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4">
+        lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4'>
 
         {/* page numbers with background image */}
         <PageNumbers nrOfPages={nrOfPages} activePage={page} />
 
         {/* Form & button group container */}
-        <div className="h-full lg:overflow-hidden lg:pb-4 lg:relative lg:mr-20 lg:pl-20">
-        {/* lg:border-2 lg:border-red-500 */}
+        <div className='h-full lg:overflow-hidden lg:pb-4 lg:relative lg:mr-20 lg:pl-20'>
 
           {/* form with title and description */}
-          <div className="-mt-[4.8rem] mx-4 bg-white rounded-lg shadow-lg lg:shadow-none p-6 lg:mt-2 lg:mx-0"> 
+          <div className='-mt-[4.8rem] mx-4 p-6 bg-white rounded-lg shadow-lg lg:shadow-none lg:mt-2 lg:mx-0'> 
             {/* border-2 border-sky-500 */}
             {(page === 1) && <Step1 submitHandler={submitHandler} data={formData} />}
             {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
+            {(page === 3) && <Step3 submitHandler={submitHandler} data={formData} />}
+            {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} />}
           </div>
 
+          {/* Make sure that the user can scroll down to the bottom of the form */}
+          <div className='w-full h-[500px]'></div>
+
           {/* "Go Back" and "Next Step" buttons container */}
-          <div className="bg-white w-full h-16 flex flex-row items-center absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]">
-          {/* lg:border-2 lg:border-green-600 */}
+          <div className='bg-white w-full h-16 flex flex-row items-center fixed lg:absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]'>
           
             {/* "Go Back" button */}
             {(page !== 1) && 
-              <button onClick={() => { setPage(page - 1)}}
-                className="text-gray-500 bg-white font-medium pl-2 py-3 lg:pl-4">
+              <button onClick={() => setPage(page - 1)}
+                className='text-gray-500 bg-white font-medium pl-2 py-3 lg:pl-4'>
                 Go Back
               </button>
             }
@@ -93,7 +98,7 @@ export default function OnBoarding() {
             <button 
               type='submit'
               form='hook-form'
-              className="text-white bg-[#02295a] px-4 py-2 rounded lg:rounded-lg ml-auto">
+              className={`text-white ${(page === nrOfPages) ? 'bg-[#473dff]' : 'bg-[#02295a]'} px-4 py-2 rounded lg:rounded-lg ml-auto`}>
               {(page === nrOfPages) ? 'Confirm' : 'Next Step'}
             </button>
           </div>
