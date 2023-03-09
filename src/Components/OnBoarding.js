@@ -85,7 +85,7 @@ export default function OnBoarding() {
           </div>
 
           {/* Make sure that the user can scroll down to the bottom of the form */}
-          <div className='w-full h-[500px]'></div>
+          <div className='w-full h-[700px]'></div>
 
           {/* "Go Back" and "Next Step" buttons container */}
           { (page < 5) &&
