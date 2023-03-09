@@ -36,13 +36,13 @@ export default function Step3({submitHandler, data}) {
 
           return (
             <label 
-              className={`w-full h-min p-3 flex flex-row justify-start items-center my-3 border rounded-lg ${styling}`}
+              className={`w-full h-min p-3 flex flex-row justify-start items-center my-3 border rounded-lg ${styling} hover:cursor-pointer`}
               key={htmlId}
               htmlFor={htmlId}
             >
 
               <input                    
-                className='w-5 h-5'
+                className='w-5 h-5 hover:cursor-pointer'
                 onClick={() => clickHandler(index)}
                 {...register(htmlId)}
                 type='checkbox'

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Step4({submitHandler, data}) {
+  const { handleSubmit } = useForm({ defaultValues: { ...data } });
 
   const priceData = {
     'Monthly': {
@@ -72,6 +73,8 @@ export default function Step4({submitHandler, data}) {
         <p className='text-[#9699ab] font-bold text-sm'>Total (per {priceData[data.billingType].billingTypeStr})</p>
         <p className='text-[#473dff] font-bold text-md'>{getCostStr(totalCost)}</p>
       </div>
+
+      <form id='hook-form' onSubmit={handleSubmit(submitHandler)}></form>
     </>
   );
 }

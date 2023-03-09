@@ -15,7 +15,7 @@ const Input = forwardRef((props, ref) => {
       }
       
       <input 
-        className={`border outline-none w-full h-10 my-2 mt-0 rounded p-2
+        className={`border outline-none w-full h-10 my-2 mt-0 rounded p-2 hover:cursor-pointer
                     ${props.error ? 'border-[#ed3548]' : 'blur:border-[#9699ab] focus:border-[#473dff]'} 
             `}
         ref={ref} 

@@ -30,8 +30,7 @@ export default function Step2({submitHandler, data}) {
               const price = (billingType === 'Monthly') ? billingOption.monthly : billingOption.yearly;
               return (
                 <label 
-                  className={`inline-block w-full h-min p-3 my-1.5 border rounded-lg ${styling}
-                              lg:w-[31%]`}
+                  className={`inline-block w-full h-min p-3 my-1.5 border rounded-lg ${styling} hover:cursor-pointer lg:w-[31%]`}
                   onClick={() => {setSubscriptionType(billingOption.type)}}
                   key={billingOption.type}
                   htmlFor={billingOption.type}>
@@ -49,7 +48,7 @@ export default function Step2({submitHandler, data}) {
                     <p className='text-sm text-[#9699ab] leading-5'>{price}</p>
                     { 
                       (billingType === 'Yearly') && 
-                      <p className='font-bold text-xs  lg:leading-5 text-[#02295a]'>2 months free</p> 
+                      <p className='font-bold text-xs lg:leading-5 text-[#02295a]'>2 months free</p> 
                     }
                   </div>                
                 </label>
@@ -62,22 +61,22 @@ export default function Step2({submitHandler, data}) {
         <div className='text-center mt-4 text-sm font-bold bg-[#eef5ff] rounded-md p-3'>
           <div>
             <label 
-              className={`w-1/4 mr-6 ${(billingType === 'Monthly' ? 'text-[#02295a]' : 'text-[#9699ab]')}`}
+              className={`w-1/4 mr-6 ${(billingType === 'Monthly' ? 'text-[#02295a]' : 'text-[#9699ab]')} hover:cursor-pointer`}
               htmlFor='Monthly'>Monthly</label>
             <div className='inline -mt-[1px] pt-[2px] rounded-[12px] h-[26px] w-54px px-1 bg-[#02295a]'>
               <input 
-                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white' 
+                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white hover:cursor-pointer' 
                 onClick={() => {setBillingType('Monthly')}}
                 type='radio' id='Monthly' {...register('billingType')} value='Monthly' 
               />
               <input 
-                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white' 
+                className='text-[#02295a] appearance-none rounded-full w-3 h-3 checked:bg-white hover:cursor-pointer' 
                 onClick={() => {setBillingType('Yearly')}}
                 type='radio' id='Yearly' {...register('billingType')} value='Yearly' 
               />
             </div>
             <label 
-              className={`w-1/4 ml-6 ${(billingType === 'Yearly' ? 'text-[#02295a]' : 'text-[#9699ab]')}`} 
+              className={`w-1/4 ml-6 ${(billingType === 'Yearly' ? 'text-[#02295a]' : 'text-[#9699ab]')} hover:cursor-pointer`} 
               htmlFor='Yearly'>Yearly</label>
           </div>
         </div>

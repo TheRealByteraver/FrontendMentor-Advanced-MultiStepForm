@@ -4,10 +4,13 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
+import Step5 from "./Step5";
 
 function PageNumbers({nrOfPages, activePage}) {
   const stepTitles = ['Your info', 'Select plan', 'Add-ons', 'Summary'];
   const pages = [];
+
+  if (activePage > nrOfPages) activePage = nrOfPages; // little hack for last "thank you page" which is page #5
 
   for (let i = 1; i <= nrOfPages; i++) {
     const colors = (i === activePage) ? 'text-black bg-[#bfe2fd] border-none' : 'text-white border-white';
@@ -37,7 +40,7 @@ function PageNumbers({nrOfPages, activePage}) {
 }
 
 export default function OnBoarding() {
-  const [page, setPage] = useState(1); // DEBUG
+  const [page, setPage] = useState(1); 
   const [formData, setFormData] = useState({
     subscriptionType: 'Arcade',
     billingType: 'Monthly'
@@ -78,30 +81,33 @@ export default function OnBoarding() {
             {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
             {(page === 3) && <Step3 submitHandler={submitHandler} data={formData} />}
             {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} />}
+            {(page === 5) && <Step5 submitHandler={submitHandler} data={formData} />}
           </div>
 
           {/* Make sure that the user can scroll down to the bottom of the form */}
           <div className='w-full h-[500px]'></div>
 
           {/* "Go Back" and "Next Step" buttons container */}
-          <div className='bg-white w-full h-16 flex flex-row items-center fixed lg:absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]'>
-          
-            {/* "Go Back" button */}
-            {(page !== 1) && 
-              <button onClick={() => setPage(page - 1)}
-                className='text-gray-500 bg-white font-medium pl-2 py-3 lg:pl-4'>
-                Go Back
-              </button>
-            }
+          { (page < 5) &&
+            <div className='bg-white w-full h-16 flex flex-row items-center fixed lg:absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]'>
+              
+              {/* "Go Back" button */}
+              {(page !== 1) && 
+                <button onClick={() => setPage(page - 1)}
+                  className='text-gray-500 bg-white font-medium pl-2 py-3 hover:cursor-pointer lg:pl-4'>
+                  Go Back
+                </button>
+              }
 
-            {/* "Next Step" button */}
-            <button 
-              type='submit'
-              form='hook-form'
-              className={`text-white ${(page === nrOfPages) ? 'bg-[#473dff]' : 'bg-[#02295a]'} px-4 py-2 rounded lg:rounded-lg ml-auto`}>
-              {(page === nrOfPages) ? 'Confirm' : 'Next Step'}
-            </button>
-          </div>
+              {/* "Next Step" button */}
+              <button 
+                type='submit'
+                form='hook-form'
+                className={`text-white ${(page === nrOfPages) ? 'bg-[#473dff]' : 'bg-[#02295a]'} px-4 py-2 ml-auto rounded hover:cursor-pointer lg:rounded-lg`}>
+                {(page === nrOfPages) ? 'Confirm' : 'Next Step'}
+              </button>
+            </div>
+          }
         </div>
       </div>
     </div>
