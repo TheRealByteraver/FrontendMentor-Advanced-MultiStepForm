@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.45e5dabf.css",
-    "main.js": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.0a02a685.js",
+    "main.js": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.b3a090cb.js",
     "static/media/bg-sidebar-desktop.svg": "/FrontendMentor-Advanced-MultiStepForm/static/media/bg-sidebar-desktop.6918153f38678372ceb1.svg",
     "static/media/bg-sidebar-mobile.svg": "/FrontendMentor-Advanced-MultiStepForm/static/media/bg-sidebar-mobile.ad41661b40ca0b967f3a.svg",
     "index.html": "/FrontendMentor-Advanced-MultiStepForm/index.html",
     "main.45e5dabf.css.map": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.45e5dabf.css.map",
-    "main.0a02a685.js.map": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.0a02a685.js.map"
+    "main.b3a090cb.js.map": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.b3a090cb.js.map"
   },
   "entrypoints": [
     "static/css/main.45e5dabf.css",
-    "static/js/main.0a02a685.js"
+    "static/js/main.b3a090cb.js"
   ]
 }
