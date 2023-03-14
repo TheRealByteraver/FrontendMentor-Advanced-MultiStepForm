@@ -1,4 +1,3 @@
-import { useState } from "react";
 import OnBoarding from "./Components/OnBoarding";
 
 function App() {

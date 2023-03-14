@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-export default function Step4({submitHandler, data}) {
+export default function Step4({submitHandler, data, pageSwitcher}) {
   const { handleSubmit } = useForm({ defaultValues: { ...data } });
 
   const priceData = {
@@ -43,7 +43,10 @@ export default function Step4({submitHandler, data}) {
         <div className='flex flex-row justify-between items-center'>
           <div>
             <p className='text-[#02295a] font-bold text-sm'>{data.subscriptionType} ({data.billingType})</p>
-            <p className='text-[#9699ab] font-bold text-sm underline'><a href="/Step2">Change</a></p>
+            <button 
+              className='text-[#9699ab] font-bold text-sm underline hover:text-[#473dff]' 
+              onClick={() => pageSwitcher(2)}>Change
+            </button>
           </div>
           <p className='text-[#02295a] font-bold text-sm'>{getCostStr(initialCost)}</p>
         </div>

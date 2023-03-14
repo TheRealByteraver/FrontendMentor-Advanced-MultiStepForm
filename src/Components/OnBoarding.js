@@ -81,7 +81,7 @@ export default function OnBoarding(props) {
             {(page === 1) && <Step1 submitHandler={submitHandler} data={formData} />}
             {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
             {(page === 3) && <Step3 submitHandler={submitHandler} data={formData} />}
-            {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} />}
+            {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} pageSwitcher={(page) => setPage(page)} />}
             {(page === 5) && <Step5 />}
           </div>
 
