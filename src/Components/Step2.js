@@ -11,9 +11,9 @@ export default function Step2({submitHandler, data}) {
   const [billingType, setBillingType] = useState(data.billingType);
 
   const billingOptions = [
-    { type: 'Arcade', monthly: '$9/mo', yearly: '$90/yr', image: '/assets/images/icon-arcade.svg' },
-    { type: 'Advanced', monthly: '$12/mo', yearly: '$120/yr', image: '/assets/images/icon-advanced.svg' },
-    { type: 'Pro', monthly: '$15/mo', yearly: '$150/yr', image: '/assets/images/icon-pro.svg' },
+    { type: 'Arcade', monthly: '$9/mo', yearly: '$90/yr', image: `${process.env.PUBLIC_URL}/assets/images/icon-arcade.svg` },
+    { type: 'Advanced', monthly: '$12/mo', yearly: '$120/yr', image: `${process.env.PUBLIC_URL}/assets/images/icon-advanced.svg` },
+    { type: 'Pro', monthly: '$15/mo', yearly: '$150/yr', image: `${process.env.PUBLIC_URL}/assets/images/icon-pro.svg` },
   ];
 
   return (
