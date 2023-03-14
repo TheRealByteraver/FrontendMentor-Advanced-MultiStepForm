@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 export default function Step3({submitHandler, data}) {
   const { handleSubmit, register } = useForm({ defaultValues: { ...data } });
-  const [addOnsChecked, setAddOnsChecked] = useState([false, false, false]); // whether boxes are checked or not
+  const [addOnsChecked, setAddOnsChecked] = useState([false, false, false]); // whether checkboxes are checked or not
 
   const isMonthlyBilling = (data.billingType === 'Monthly');
   const addOnOptions = [

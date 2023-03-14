@@ -39,7 +39,7 @@ function PageNumbers({nrOfPages, activePage}) {
   );
 }
 
-export default function OnBoarding() {
+export default function OnBoarding(props) {
   const [page, setPage] = useState(1); 
   const [formData, setFormData] = useState({
     subscriptionType: 'Arcade',
@@ -49,14 +49,17 @@ export default function OnBoarding() {
   const nrOfPages = 4;
 
   function submitHandler(data) {
-    setFormData(prevFormData => {
-      console.log('form data is now:', { ...prevFormData, ...data });
-      return {
+    setFormData(prevFormData => ({
         ...prevFormData,
         ...data
-      };
-    });
-    setPage(page + 1);
+      }));
+
+    if (page < nrOfPages) {
+      setPage(page + 1);
+    } else {
+      setPage(nrOfPages + 1);
+      props.submitHandler(formData);
+    }    
   }
   
   return (
@@ -64,9 +67,7 @@ export default function OnBoarding() {
     <div className='bg-[#eef5ff] h-full lg:h-screen lg:flex lg:justify-center lg:items-center'>
 
       {/* main container */}
-      <div className='
-        h-full relative
-        lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4'>
+      <div className='h-full relative lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4'>
 
         {/* page numbers with background image */}
         <PageNumbers nrOfPages={nrOfPages} activePage={page} />
@@ -76,12 +77,12 @@ export default function OnBoarding() {
 
           {/* form with title and description */}
           <div className='-mt-[4.8rem] mx-4 p-6 bg-white rounded-lg shadow-lg lg:shadow-none lg:mt-2 lg:mx-0'> 
-            {/* border-2 border-sky-500 */}
+            
             {(page === 1) && <Step1 submitHandler={submitHandler} data={formData} />}
             {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
             {(page === 3) && <Step3 submitHandler={submitHandler} data={formData} />}
             {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} />}
-            {(page === 5) && <Step5 submitHandler={submitHandler} data={formData} />}
+            {(page === 5) && <Step5 />}
           </div>
 
           {/* Make sure that the user can scroll down to the bottom of the form */}
