@@ -1,4 +1,4 @@
-export default function Step5() {
+const Step5 = () => {
 
   return (
     <div className='flex flex-col justify-center items-center lg:mt-20'>
@@ -12,3 +12,5 @@ export default function Step5() {
     </div>
   );
 }
+
+export default Step5;

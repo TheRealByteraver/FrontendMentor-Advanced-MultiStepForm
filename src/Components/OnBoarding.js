@@ -1,67 +1,81 @@
 import { useState } from "react";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup"; 
 
+// This component draws the little page nrs in their circle, with a description
+import PageNumbers from "./PageNumbers";
+
+// This component proves the 'Go Back' and 'Next' / 'Confirm' buttons at the form's bottom
+import GoBackNextButtonGroup from './GoBackNextButtonGroup';
+
+// Import each input group of the multi-step form
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import Step5 from "./Step5";
 
-function PageNumbers({nrOfPages, activePage}) {
-  const stepTitles = ['Your info', 'Select plan', 'Add-ons', 'Summary'];
-  const pages = [];
-
-  if (activePage > nrOfPages) activePage = nrOfPages; // little hack for last "thank you page" which is page #5
-
-  for (let i = 1; i <= nrOfPages; i++) {
-    const colors = (i === activePage) ? 'text-black bg-[#bfe2fd] border-none' : 'text-white border-white';
-    pages.push(
-      <li key={`key-${i}`}
-        className='lg:border-0 text-white 
-        lg:flex lg:justify-start lg:items-center h-16'>
-        <div className={`font-bold border rounded-full h-8 w-8 mx-2 flex justify-center items-center 
-            ${colors}`}
-        >{i}
-        </div>
-        <div className='hidden lg:inline-block'>
-          <h2 className='text-[#9699ab] text-xs '>STEP {i}</h2>
-          <p className='text-white uppercase font-medium text-sm tracking-widest'>{stepTitles[i - 1]}</p>
-        </div>
-      </li>
-    );
-  }
-
-  return (
-    <ul className="bg-[url('/public/assets/images/bg-sidebar-mobile.svg')] bg-no-repeat bg-[100%_auto] w-full h-44 flex flex-row justify-center pt-8
-    lg:bg-[url('/public/assets/images/bg-sidebar-desktop.svg')] lg:w-64 lg:h-full lg:float-left lg:flex-col lg:justify-start lg:pl-4 lg:pt-4
-    ">
-      {pages}
-    </ul>    
-  );
-}
-
-export default function OnBoarding(props) {
-  const [page, setPage] = useState(1); 
-  const [formData, setFormData] = useState({
-    subscriptionType: 'Arcade',
-    billingType: 'Monthly'
-  });
-
+const OnBoarding = ({submitHandler: submitData}) => {
   const nrOfPages = 4;
 
-  function submitHandler(data) {
-    setFormData(prevFormData => ({
-        ...prevFormData,
-        ...data
-      }));
+  const stepTitles = [
+    {
+      header: 'Personal info',
+      description: 'Please provide your name, email address, and phone number.',
+    },
+    {
+      header: 'Select your plan',
+      description: 'You have the option of monthly or yearly billing.',
+    },
+    {
+      header: 'Pick add-ons',
+      description: 'Add-ons help enhance your gaming experience.',
+    },
+    {
+      header: 'Finishing Up',
+      description: 'Double-check everything looks OK before confirming.',
+    },
+  ];
 
-    if (page < nrOfPages) {
-      setPage(page + 1);
-    } else {
-      setPage(nrOfPages + 1);
-      props.submitHandler(formData);
-    }    
-  }
-  
+  const addOnOptions = [
+    { id: 0, title: 'Online service', description: 'Access to multiplayer games', monthly: '+$1/mo', yearly: '+$10/yr' },
+    { id: 1, title: 'Larger storage', description: 'Extra 1TB of cloud save', monthly: '+$2/mo', yearly: '+$20/yr' },
+    { id: 2, title: 'Customizable profile', description: 'Custom theme on your profile', monthly: '+$2/mo', yearly: '+$20/yr' }
+  ];
+
+  const schema = yup.object().shape({
+    fullName: yup.string().required('The Name field is required'), // custom error message
+    emailAddress: yup.string().email('Your email address is not valid').required('An email address is required'),
+    phoneNumber: yup.number().typeError('Please enter a valid phone number').positive('').integer().required('A phone number is required'),
+  });
+
+  const defaultFormValues = {
+    fullName: '',
+    emailAddress: '',
+    phoneNumber: '',
+    subscriptionType: 'Arcade',
+    billingType: 'Monthly',
+    'Online service': false,
+    'Larger storage': false,
+    'Customizable profile': false,
+  };
+
+  const formHook = useForm({
+    mode: 'onChange', 
+    defaultValues: defaultFormValues,
+    resolver: yupResolver(schema),
+  });
+
+  // keep track of which step/ page we are on in the multi step form
+  const [pageNr, setPageNr] = useState(1); 
+
+  // subscriptionTypes = ['Arcade', 'Advanced', 'Pro']
+  const [subscriptionType, setSubscriptionType] = useState(defaultFormValues.subscriptionType); 
+
+  // billingTypes = ['Monthly', 'Yearly']
+  const [billingType, setBillingType] = useState(defaultFormValues.billingType);
+
   return (
     // background, center child
     <div className='bg-[#eef5ff] h-full lg:h-screen lg:flex lg:justify-center lg:items-center'>
@@ -70,47 +84,41 @@ export default function OnBoarding(props) {
       <div className='h-full relative lg:shadow-lg lg:w-[1000px] lg:h-[564px] lg:rounded-lg lg:bg-white lg:p-4'>
 
         {/* page numbers with background image */}
-        <PageNumbers nrOfPages={nrOfPages} activePage={page} />
+        <PageNumbers nrOfPages={nrOfPages} activePage={pageNr} />
 
         {/* Form & button group container */}
         <div className='h-full lg:overflow-hidden lg:pb-4 lg:relative lg:mr-20 lg:pl-20'>
 
           {/* form with title and description */}
           <div className='-mt-[4.8rem] mx-4 p-6 bg-white rounded-lg shadow-lg lg:shadow-none lg:mt-2 lg:mx-0'> 
-            
-            {(page === 1) && <Step1 submitHandler={submitHandler} data={formData} />}
-            {(page === 2) && <Step2 submitHandler={submitHandler} data={formData} />}
-            {(page === 3) && <Step3 submitHandler={submitHandler} data={formData} />}
-            {(page === 4) && <Step4 submitHandler={submitHandler} data={formData} pageSwitcher={(page) => setPage(page)} />}
-            {(page === 5) && <Step5 />}
+
+            {pageNr <= nrOfPages && 
+              <>
+                <h1 className='text-[#02295a] text-xl font-bold mt-1'>{stepTitles[pageNr - 1].header}</h1>
+                <p className='mt-2 text-md text-[#9699ab]'>{stepTitles[pageNr - 1].description}</p>
+              </>
+            }
+
+            <form 
+              id='hook-form'
+              // onSubmit={handleSubmit(submitHandler)} // not used
+              >
+              {(pageNr === 1) && <Step1 {...{formHook}} />}
+              {(pageNr === 2) && <Step2 {...{formHook, billingType, setBillingType, subscriptionType, setSubscriptionType}} /> }
+              {(pageNr === 3) && <Step3 {...{formHook, billingType, addOnOptions }} /> }
+              {(pageNr === 4) && <Step4 {...{formHook, billingType, subscriptionType, addOnOptions, setPageNr }} /> }
+              {(pageNr === 5) && <Step5 />}
+            </form>
           </div>
 
           {/* Make sure that the user can scroll down to the bottom of the form */}
           <div className='w-full h-[700px]'></div>
 
-          {/* "Go Back" and "Next Step" buttons container */}
-          { (page < 5) &&
-            <div className='bg-white w-full h-16 flex flex-row items-center fixed lg:absolute bottom-0 p-3 lg:bottom-4 lg:pl-2 lg:pr-[104px]'>
-              
-              {/* "Go Back" button */}
-              {(page !== 1) && 
-                <button onClick={() => setPage(page - 1)}
-                  className='text-gray-500 bg-white font-medium pl-2 py-3 hover:cursor-pointer lg:pl-4'>
-                  Go Back
-                </button>
-              }
-
-              {/* "Next Step" button */}
-              <button 
-                type='submit'
-                form='hook-form'
-                className={`text-white ${(page === nrOfPages) ? 'bg-[#473dff]' : 'bg-[#02295a]'} px-4 py-2 ml-auto rounded hover:cursor-pointer lg:rounded-lg`}>
-                {(page === nrOfPages) ? 'Confirm' : 'Next Step'}
-              </button>
-            </div>
-          }
+          <GoBackNextButtonGroup {...{ formHook, pageNr, setPageNr, nrOfPages, submitData }} />
         </div>
       </div>
     </div>
   );
 }
+
+export default OnBoarding;

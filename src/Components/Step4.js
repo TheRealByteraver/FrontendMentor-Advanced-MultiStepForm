@@ -1,7 +1,5 @@
-import { useForm } from 'react-hook-form';
-
-export default function Step4({submitHandler, data, pageSwitcher}) {
-  const { handleSubmit } = useForm({ defaultValues: { ...data } });
+const Step4 = ({formHook, setPageNr, addOnOptions, billingType, subscriptionType}) => {
+  const { getValues } = formHook;
 
   const priceData = {
     'Monthly': {
@@ -24,59 +22,53 @@ export default function Step4({submitHandler, data, pageSwitcher}) {
       'suffixStr': '/yr',
       'billingTypeStr': 'year',
     }
-  };
+  };  
 
-  let initialCost = priceData[data.billingType][data.subscriptionType];
-  let totalCost = initialCost;
-  if (data['AddOn-Online service']) totalCost += priceData[data.billingType]['Online service'];
-  if (data['AddOn-Larger storage']) totalCost += priceData[data.billingType]['Larger storage'];
-  if (data['AddOn-Customizable profile']) totalCost += priceData[data.billingType]['Customizable profile']; 
+  const initialCost = () => priceData[billingType][subscriptionType];
+  
+  const totalCost = () => {
+    const formValues = getValues();
+    let totalCost = initialCost();
+    addOnOptions.forEach(addOnOption => {
+      if (formValues[addOnOption.title]) {
+        totalCost += priceData[billingType][addOnOption.title];
+      }
+    });
+    return totalCost;
+  }
 
-  const getCostStr = (value) => `$${value}${priceData[data.billingType].suffixStr}`;
+  const getCostStr = (value) => `$${value}${priceData[billingType].suffixStr}`;
 
   return (
     <>
-      <h1 className='text-[#02295a] text-xl font-bold mt-1'>Finishing Up</h1>
-      <p className='mt-2 mb-4 text-md text-[#9699ab]'>Double-check everything looks OK before confirming.</p>
-
       <div className='bg-[#f0f6ff] rounded-lg mt-6 p-3'>
         <div className='flex flex-row justify-between items-center'>
           <div>
-            <p className='text-[#02295a] font-bold text-sm'>{data.subscriptionType} ({data.billingType})</p>
+            <p className='text-[#02295a] font-bold text-sm'>{subscriptionType} ({billingType})</p>
             <button 
               className='text-[#9699ab] font-bold text-sm underline hover:text-[#473dff]' 
-              onClick={() => pageSwitcher(2)}>Change
+              onClick={() => setPageNr(2)}>Change
             </button>
           </div>
-          <p className='text-[#02295a] font-bold text-sm'>{getCostStr(initialCost)}</p>
+          <p className='text-[#02295a] font-bold text-sm'>{getCostStr(initialCost())}</p>
         </div>
         <hr className='mt-4'></hr>
-        { data['AddOn-Online service'] && 
-          <div className='flex flex-row justify-between items-center mt-4'>
-            <p className='text-[#9699ab] font-bold text-sm'>Online service</p>
-            <p className='text-[#02295a] font-bold text-sm'>+{getCostStr(priceData[data.billingType]['Online service'])}</p>
-          </div>
-        }
-        { data['AddOn-Larger storage'] && 
-          <div className='flex flex-row justify-between items-center mt-4'>
-            <p className='text-[#9699ab] font-bold text-sm'>Larger storage</p>
-            <p className='text-[#02295a] font-bold text-sm'>+{getCostStr(priceData[data.billingType]['Larger storage'])}</p>
-          </div>
-        }
-        { data['AddOn-Customizable profile'] && 
-          <div className='flex flex-row justify-between items-center mt-4'>
-            <p className='text-[#9699ab] font-bold text-sm'>Customizable profile</p>
-            <p className='text-[#02295a] font-bold text-sm'>+{getCostStr(priceData[data.billingType]['Customizable profile'])}</p>
-          </div>
-        }
+          {
+            addOnOptions.map(addOnOption => getValues(addOnOption.title) &&
+              <div key={addOnOption.title} className='flex flex-row justify-between items-center mt-4'>
+                <p className='text-[#9699ab] font-bold text-sm'>{addOnOption.title}</p>
+                <p className='text-[#02295a] font-bold text-sm'>+{getCostStr(priceData[billingType][addOnOption.title])}</p>
+              </div>
+            )
+          }
       </div>
       
       <div className='flex flex-row justify-between items-center mt-6 px-3'>
-        <p className='text-[#9699ab] font-bold text-sm'>Total (per {priceData[data.billingType].billingTypeStr})</p>
-        <p className='text-[#473dff] font-bold text-md'>{getCostStr(totalCost)}</p>
+        <p className='text-[#9699ab] font-bold text-sm'>Total (per {priceData[billingType].billingTypeStr})</p>
+        <p className='text-[#473dff] font-bold text-md'>{getCostStr(totalCost())}</p>
       </div>
-
-      <form id='hook-form' onSubmit={handleSubmit(submitHandler)}></form>
     </>
   );
 }
+
+export default Step4;
