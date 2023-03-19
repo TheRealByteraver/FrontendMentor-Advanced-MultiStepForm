@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.45e5dabf.css",
-    "main.js": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.b3a090cb.js",
+    "main.css": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.5eb8afc3.css",
+    "main.js": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.37279651.js",
     "static/media/bg-sidebar-desktop.svg": "/FrontendMentor-Advanced-MultiStepForm/static/media/bg-sidebar-desktop.6918153f38678372ceb1.svg",
     "static/media/bg-sidebar-mobile.svg": "/FrontendMentor-Advanced-MultiStepForm/static/media/bg-sidebar-mobile.ad41661b40ca0b967f3a.svg",
     "index.html": "/FrontendMentor-Advanced-MultiStepForm/index.html",
-    "main.45e5dabf.css.map": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.45e5dabf.css.map",
-    "main.b3a090cb.js.map": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.b3a090cb.js.map"
+    "main.5eb8afc3.css.map": "/FrontendMentor-Advanced-MultiStepForm/static/css/main.5eb8afc3.css.map",
+    "main.37279651.js.map": "/FrontendMentor-Advanced-MultiStepForm/static/js/main.37279651.js.map"
   },
   "entrypoints": [
-    "static/css/main.45e5dabf.css",
-    "static/js/main.b3a090cb.js"
+    "static/css/main.5eb8afc3.css",
+    "static/js/main.37279651.js"
   ]
 }

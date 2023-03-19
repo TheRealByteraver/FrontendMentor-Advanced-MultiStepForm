@@ -21,8 +21,9 @@ const OnBoarding = ({submitHandler: submitData}) => {
     { id: 2, title: 'Customizable profile', description: 'Custom theme on your profile', monthly: '+$2/mo', yearly: '+$20/yr' }
   ];
 
+  // custom error messages
   const schema = yup.object().shape({
-    fullName: yup.string().required('The Name field is required'), // custom error message
+    fullName: yup.string().required('The Name field is required'), 
     emailAddress: yup.string().email('Your email address is not valid').required('An email address is required'),
     phoneNumber: yup.number().typeError('Please enter a valid phone number').positive('').integer().required('A phone number is required'),
   });
@@ -47,22 +48,13 @@ const OnBoarding = ({submitHandler: submitData}) => {
   // keep track of which step/ page we are on in the multi step form
   const [pageNr, setPageNr] = useState(1); 
 
-  // subscriptionTypes = ['Arcade', 'Advanced', 'Pro']
-  const [subscriptionType, setSubscriptionType] = useState(defaultFormValues.subscriptionType); 
-
-  // billingTypes = ['Monthly', 'Yearly']
-  const [billingType, setBillingType] = useState(defaultFormValues.billingType);
-
   return (
     <FormFrame {...{formHook, pageNr, setPageNr, submitData}} >
-      <form 
-        id='hook-form'
-        // onSubmit={handleSubmit(submitHandler)} // not used
-        >
-        {(pageNr === 1) && <Step1 {...{formHook}} />}
-        {(pageNr === 2) && <Step2 {...{formHook, billingType, setBillingType, subscriptionType, setSubscriptionType}} /> }
-        {(pageNr === 3) && <Step3 {...{formHook, billingType, addOnOptions }} /> }
-        {(pageNr === 4) && <Step4 {...{formHook, billingType, subscriptionType, addOnOptions, setPageNr }} /> }
+      <form>
+        {(pageNr === 1) && <Step1 formHook={formHook} />}
+        {(pageNr === 2) && <Step2 formHook={formHook} /> }
+        {(pageNr === 3) && <Step3 {...{formHook, addOnOptions }} /> }
+        {(pageNr === 4) && <Step4 {...{formHook, addOnOptions, setPageNr }} /> }
         {(pageNr === 5) && <Step5 />}
       </form>
     </FormFrame>

@@ -1,8 +1,8 @@
-const Step3 = ({formHook, addOnOptions, billingType}) => {
-  const { watch, register } = formHook;
+const Step3 = ({formHook, addOnOptions }) => {
+  const { watch, register, getValues } = formHook;
 
   return addOnOptions.map((addOnOption, index) => {
-      const price = (billingType === 'Monthly') ? addOnOption.monthly : addOnOption.yearly;
+      const price = (getValues('billingType') === 'Monthly') ? addOnOption.monthly : addOnOption.yearly;
       const htmlId = `${addOnOption.title}`;
       const styling = watch(addOnOptions[index].title)
         ? 'bg-[#eef5ff] border border-[#473dff]'
